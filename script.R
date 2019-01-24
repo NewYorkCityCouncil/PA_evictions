@@ -21,8 +21,8 @@
   }
 
   #set directory
-  getwd()
-  setwd('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/')
+  #getwd()
+  #setwd('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/')
 
   #environment variable
   source("envs.R")
@@ -34,7 +34,7 @@
   ## dataset was filtered for infraction code1 - Class 1 hazardous
  
   #getting infraction codes that are Class 1 in a comma separated list for api call
-  codes=read.csv('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Original_Data/infraction_codes.csv')
+  codes=read.csv('infraction_codes.csv')
  
   head(codes)
  
@@ -497,7 +497,7 @@
 ################################################################
  
   #dataset has no api
-  sub=read.csv('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Original_Data/SubsidizedHousingFurman.csv')
+  sub=read.csv('SubsidizedHousingFurman.csv')
  
   dim(sub)
   str(sub)
@@ -871,7 +871,7 @@
   #scraped script to be inserted here
  
   #dataset has no api
-  stab=read.csv('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Processed_Data/stabilizedbldgs.csv')
+  stab=read.csv('stabilizedbldgs.csv')
  
   dim(stab)
   str(stab)
