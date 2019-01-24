@@ -931,15 +931,15 @@
  
   # read in pluto shapefiles
   ###sf
-  bx <-st_read('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Shapefiles/Bronx/Bronx_Pluto_18.shp',layer="Bronx_Pluto_18")
+  bx <-st_read('Bronx/Bronx_Pluto_18.shp',layer="Bronx_Pluto_18")
   st_transform(bx, "+proj=longlat +datum=WGS84")
-  bk<-st_read('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Shapefiles/Brooklyn/Brooklyn_Pluto_18.shp',layer="Brooklyn_Pluto_18")
+  bk<-st_read('Brooklyn/Brooklyn_Pluto_18.shp',layer="Brooklyn_Pluto_18")
   st_transform(bk, "+proj=longlat +datum=WGS84")
-  mn<- st_read('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Shapefiles/Manhattan/Manhattan_Pluto_18.shp',layer="Manhattan_Pluto_18")
+  mn<- st_read('Manhattan/Manhattan_Pluto_18.shp',layer="Manhattan_Pluto_18")
   st_transform(mn, "+proj=longlat +datum=WGS84")
-  qn<-st_read('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Shapefiles/Queens/Queens_Pluto_18.shp',layer="Queens_Pluto_18")
+  qn<-st_read('Queens/Queens_Pluto_18.shp',layer="Queens_Pluto_18")
   st_transform(qn, "+proj=longlat +datum=WGS84")
-  si<-st_read('G:/DATABASE/City_Council/Public_Advocate/Evictions_2018_12_10/Data/Shapefiles/StatenIsland/StatenIsland_Pluto_18.shp',layer="StatenIsland_Pluto_18")
+  si<-st_read('StatenIsland/StatenIsland_Pluto_18.shp',layer="StatenIsland_Pluto_18")
   st_transform(si, "+proj=longlat +datum=WGS84")
  
   #join boroughs in nyc
@@ -976,28 +976,28 @@
  
   #read in hexbin
   #sf
-  hex <- st_read('G:/Pre_9_13_18/Shapefiles/Hexbins/hex_small/Small_1500.shp')
+  hex <- st_read('hex_small/Small_1500.shp')
   hex=st_transform(hex,"+proj=longlat +datum=WGS84")
 
   #read in zipcode
-  zip_sf <- st_read('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/ZIP_CODE/ZIP_CODE_040114.shp')%>%
+  zip_sf <- st_read('ZIP_CODE/ZIP_CODE_040114.shp')%>%
   st_transform("+proj=longlat +datum=WGS84")
   zip_sf$ZIPCODE=as.numeric(as.character(zip_sf$ZIPCODE))
 
   #read in community board
-  cd_sf <- st_read('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/Community_Districts/geo_export_a3cf7f07-83ef-460c-bcd8-bee5ef2f297d.shp')%>%
+  cd_sf <- st_read('Community_Districts/geo_export_a3cf7f07-83ef-460c-bcd8-bee5ef2f297d.shp')%>%
   st_transform("+proj=longlat +datum=WGS84")
 
   #read in council district
-  cc_sf <- st_read('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/City_Council_Districts/geo_export_2cee7667-624f-4e9d-a7bf-06e9901cf2ee.shp') %>%
+  cc_sf <- st_read('City_Council_Districts/geo_export_2cee7667-624f-4e9d-a7bf-06e9901cf2ee.shp') %>%
   st_transform("+proj=longlat +datum=WGS84")
 
   #read in senate district
-  senate <- st_read('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/State_Senate_Districts/geo_export_7b5d585c-56e1-46ec-b1c2-ac8f3398a70e.shp') %>%
+  senate <- st_read('State_Senate_Districts/geo_export_7b5d585c-56e1-46ec-b1c2-ac8f3398a70e.shp') %>%
   st_transform("+proj=longlat +datum=WGS84")
 
   #read in assembly district
-  assembly <-st_read('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/State_Assembly_Districts/geo_export_743f1700-3b1c-469b-8489-808b1c49e6d3.shp') %>%
+  assembly <-st_read('State_Assembly_Districts/geo_export_743f1700-3b1c-469b-8489-808b1c49e6d3.shp') %>%
   st_transform("+proj=longlat +datum=WGS84")
 
 ##########################################
