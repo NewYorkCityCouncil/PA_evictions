@@ -11,6 +11,7 @@
   #library(rgdal)
   library(sf)
   library(dplyr)
+  library(RCurl)
   dat1=Sys.Date()-1
   options(scipen=999)
 
@@ -679,7 +680,7 @@
 ###################################################
 # Dataset 6: Speculation Watchlist
 #################################################
-   #api read in
+  #api read in
   p='https://data.cityofnewyork.us/resource/dge8-thm3.csv?$limit=900000'
   spw=read.socrata(p)
  
@@ -862,8 +863,6 @@
  
  
   write.csv(f_spw, 'spw.csv', row.names=FALSE)
-
-
  
 ################################################
 # Dataset 7: Rent Stabilized Buildings list
@@ -1017,38 +1016,38 @@
   ##########################checking dataset
   names(e)
   str(e)
-  unique(e[,1])
+  #unique(e[,1])
   #boros look good
-  length(unique(e[,2]))
-  length(unique(e[,3]))
-  unique(e[,2])[1:10]
+  #length(unique(e[,2]))
+  #length(unique(e[,3]))
+  #unique(e[,2])[1:10]
   #there are couple duplicate court index #s and docket #s
-  length(unique(e[,4]))
-  unique(e[,4])[1:10]
+  #length(unique(e[,4]))
+  #unique(e[,4])[1:10]
   #addresses need cleaning and also duplicate addresses
-  unique(e[,5])[1:10]
-  length(unique(e[,5]))
+  #unique(e[,5])[1:10]
+  #length(unique(e[,5]))
   #missing apartment numbers
-  min(e[,6])
-  length(unique(e[,6]))
+  #min(e[,6])
+  #length(unique(e[,6]))
   #all evictions have zipcode, 3, zipcodes have '00000', can get those zipcodes from geocoding
-  unique(e[,7])[1:10]
-  length(unique(e[,7]))
-  min(e[,7])
-  max(e[,7])
-  class(e[,7])
-  sort(unique(e[,7]), decreasing=TRUE)[1:5]
+  #unique(e[,7])[1:10]
+  #length(unique(e[,7]))
+  #min(e[,7])
+  #max(e[,7])
+  #class(e[,7])
+  #sort(unique(e[,7]), decreasing=TRUE)[1:5]
   #there may be seasonality, trend in the executed dates, earliest date is 2017-01-03, latest date is 2070-03-29. There is only one, remove.
-  length(unique(e[,8]))
-  length(unique(e[,9]))
-  unique(e[,8])
-  unique(e[,9])
+  #length(unique(e[,8]))
+  #length(unique(e[,9]))
+  #unique(e[,8])
+  #unique(e[,9])
   #cbind/paste marshall first and last name
-  length(unique(e[,10]))
-  unique(e[,10])
+  #length(unique(e[,10]))
+  #unique(e[,10])
   #residential and commercial type looks good
-  length(unique(e[,11]))
-  unique(e[,11])
+ # length(unique(e[,11]))
+  #unique(e[,11])
   #only one value in scheduled status, 'scheduled', this dataset may not be the whole universe of evictions
  
   ####################cleaning dates & adding a Year column for grouping later
