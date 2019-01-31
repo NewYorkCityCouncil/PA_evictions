@@ -1098,7 +1098,7 @@
    
     ####################cleaning dates & adding a Year column for grouping later
     e$Executed_Date=as.Date(anytime(e$executed_date))
-    e=e[-which(e$Executed_Date>Sys.Date()),]
+    #e=e[-which(e$Executed_Date>Sys.Date()),]
     e$Year=format(as.Date(e$Executed_Date, format="%d/%m/%Y"),"%Y")
     ###################creating marshal's fullname column
     #e$Marshal_Name=paste(e$marshal_first_name, e$marshal_last_name, sep=" ")
