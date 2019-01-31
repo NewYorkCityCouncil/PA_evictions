@@ -1022,21 +1022,21 @@
   nych=nyc
 
   nych=left_join(nych,f_hhw, by=c("BBL"="BBL"))
-  nych=nycs[which(is.na(nych$Descriptors)==FALSE),]
+  nych=nych[which(is.na(nych$Descriptors)==FALSE),]
   st_write(nych,'hhw311_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #hpd violations
   nycm=nyc
 
   nycm=left_join(nycm,f_hmc, by=c("BBL"="BBL"))
-  nycm=nycs[which(is.na(nycm$Descriptions)==FALSE),]
+  nycm=nycm[which(is.na(nycm$Descriptions)==FALSE),]
   st_write(nycm,'hpdvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #dobecb violations
   nycd=nyc
 
   nycd=left_join(nycd,f_dobecb, by=c("BBL"="BBL"))
-  nycd=nycs[which(is.na(nycd$Infraction_Codes)==FALSE),]
+  nycd=nycd[which(is.na(nycd$Infraction_Codes)==FALSE),]
   st_write(nycd,'dobecbvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #speculation watchlist
@@ -1044,7 +1044,7 @@
 
   nycw=left_join(nycw,f_spw, by=c("BBL"="BBL"))
   nycw=nycw[which(is.na(nycw$Price)==FALSE),]
-  st_write(nycd,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
+  st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
 ##########################################
 # MAIN DATASET: EVICTIONS
