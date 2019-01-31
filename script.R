@@ -1094,8 +1094,6 @@
     length(unique(e[,10]))
     unique(e[,10])
     #residential and commercial type looks good
-    length(unique(e[,11]))
-    unique(e[,11])
     #only one value in scheduled status, 'scheduled', this dataset may not be the whole universe of evictions
    
     ####################cleaning dates & adding a Year column for grouping later
