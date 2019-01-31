@@ -498,184 +498,185 @@
 ################################################################
  
   #dataset has no api
-  sub=read.csv('SubsidizedHousingFurman.csv')
+  #update this csv when dataset is updated on furman center
+  #sub=read.csv('SubsidizedHousingFurman.csv')
  
-  dim(sub)
-  str(sub)
-  names(sub)
-  min(sub$bbl)
+  #dim(sub)
+  #str(sub)
+  #names(sub)
+  #min(sub$bbl)
  
   #save a copy
-  sub2=sub
+  #sub2=sub
  
   #checking dataset
-  unique(sub$agency_name)
-  unique(sub$regulatory_tool)
-  unique(sub$program_name)
-  length(unique(sub$project_name))
+  #unique(sub$agency_name)
+  #unique(sub$regulatory_tool)
+  #unique(sub$program_name)
+  #length(unique(sub$project_name))
  
   #change bbl class to character
-  sub$bbl=as.character(as.numeric(sub$bbl))
+  #sub$bbl=as.character(as.numeric(sub$bbl))
  
   #getting expiration period 0-5, 5-10, 10-15, 15+
-  library(anytime)
-  end=anytime(as.character(sub$end_date))
-  endyr=format(as.Date(end, format="%d/%m/%Y"),"%Y")
-  currentyr=format(as.Date(Sys.time(), format="%d/%m/%Y"),"%Y")
-  yrsexpire=as.numeric(endyr)-as.numeric(currentyr)
-  yrsexpirecat=yrsexpire
-  summary(yrsexpire)
-  summary(endyr)
-  class(yrsexpirecat)
+  #library(anytime)
+  #end=anytime(as.character(sub$end_date))
+  #endyr=format(as.Date(end, format="%d/%m/%Y"),"%Y")
+  #currentyr=format(as.Date(Sys.time(), format="%d/%m/%Y"),"%Y")
+  #yrsexpire=as.numeric(endyr)-as.numeric(currentyr)
+  #yrsexpirecat=yrsexpire
+  #summary(yrsexpire)
+  #summary(endyr)
+  #class(yrsexpirecat)
  
- w1=which(yrsexpire>14)
-  w2=which(yrsexpire<0)
-  w3=which(yrsexpire>-1 & yrsexpire<5)
-  w4=which(yrsexpire>4 & yrsexpire<10)
-  w5=which(yrsexpire>9 & yrsexpire<15)
-  w6=which(is.na(yrsexpire)==TRUE)
+  #w1=which(yrsexpire>14)
+  #w2=which(yrsexpire<0)
+  #w3=which(yrsexpire>-1 & yrsexpire<5)
+  #w4=which(yrsexpire>4 & yrsexpire<10)
+  #w5=which(yrsexpire>9 & yrsexpire<15)
+  #w6=which(is.na(yrsexpire)==TRUE)
  
   #yrsexpirecat[1:5]
   #yrsexpire[1:5]
  
-  yrsexpirecat[w1]<-"15 or more years"
-  yrsexpirecat[w2]<-"Already Expired"
-  yrsexpirecat[w3]<-"Less than 5 years"
-  yrsexpirecat[w4]<-"Between 5-9 years"
-  yrsexpirecat[w5]<-"Between 10-14 years"
-  yrsexpirecat[w6]<-"Permanentaly Affordable"
+  #yrsexpirecat[w1]<-"15 or more years"
+  #yrsexpirecat[w2]<-"Already Expired"
+  #yrsexpirecat[w3]<-"Less than 5 years"
+  #yrsexpirecat[w4]<-"Between 5-9 years"
+  #yrsexpirecat[w5]<-"Between 10-14 years"
+  #yrsexpirecat[w6]<-"Permanentaly Affordable"
  
-  yrsexpire[1:5]
-  yrsexpirecat[1:5]
-  unique(yrsexpire)
-  unique(yrsexpirecat)
+  #yrsexpire[1:5]
+  #yrsexpirecat[1:5]
+  #unique(yrsexpire)
+  #unique(yrsexpirecat)
  
-  sub$yrsexpire=yrsexpire
-  sub$yrsexpirecat=yrsexpirecat
+  #sub$yrsexpire=yrsexpire
+  #sub$yrsexpirecat=yrsexpirecat
  
-  t=data.table(table(sub$bbl))
-  names(t)<-c('BBL','Number_of_Subsidies')
+  #t=data.table(table(sub$bbl))
+  #names(t)<-c('BBL','Number_of_Subsidies')
   #t$BBL=as.character(as.numeric(t$BBL))
  
   #getting all the agency names, regulatory tools, program names, and project names for a unique bbl
   #subsettting conh
-  dbly=data.table(sub[,c(1,5:8,33)])
-  setkey(dbly, key='bbl')
-  agn=dbly[,agency_name, by=.(bbl)]
-  rgt=dbly[,regulatory_tool, by=.(bbl)]
-  pgn=dbly[,program_name, by=.(bbl)]
-  pjn=dbly[,project_name, by=.(bbl)]
-  yec=dbly[,yrsexpirecat, by=.(bbl)]
+  #dbly=data.table(sub[,c(1,5:8,33)])
+  #setkey(dbly, key='bbl')
+  #agn=dbly[,agency_name, by=.(bbl)]
+  #rgt=dbly[,regulatory_tool, by=.(bbl)]
+  #pgn=dbly[,program_name, by=.(bbl)]
+  #pjn=dbly[,project_name, by=.(bbl)]
+  #yec=dbly[,yrsexpirecat, by=.(bbl)]
  
   ####loop
-  u=unique(dbly$bbl)
-  r=list()
-  for (i in 1:length(u)){
-  r[[i]]=agn[which(agn$bbl==u[i]),2]
-  }
-  r[1:5]
+  #u=unique(dbly$bbl)
+  #r=list()
+  #for (i in 1:length(u)){
+  #r[[i]]=agn[which(agn$bbl==u[i]),2]
+  #}
+  #r[1:5]
  
-  u2=c()
-  for (i in 1:length(r))
-  {
-  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  }
-  u2[3]
+  #u2=c()
+  #for (i in 1:length(r))
+  #{
+  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  #}
+  #u2[3]
  
-  agn2=data.table(cbind(u,u2))
-  names(agn2)<-c('BBL', 'agency_name')
+  #agn2=data.table(cbind(u,u2))
+  #names(agn2)<-c('BBL', 'agency_name')
   ###############
-  u=unique(dbly$bbl)
-  r=list()
-  for (i in 1:length(u)){
-  r[[i]]=rgt[which(rgt$bbl==u[i]),2]
-  }
-  r[1:5]
+  #u=unique(dbly$bbl)
+  #r=list()
+  #for (i in 1:length(u)){
+  #r[[i]]=rgt[which(rgt$bbl==u[i]),2]
+  #}
+  #r[1:5]
  
-  u2=c()
-  for (i in 1:length(r))
-  {
-  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  }
-  u2[3]
+  #u2=c()
+  #for (i in 1:length(r))
+  #{
+  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  #}
+  #u2[3]
  
-  rgt2=data.table(cbind(u,u2))
-  names(rgt2)<-c('BBL', 'regulatory_tool')
+  #rgt2=data.table(cbind(u,u2))
+  #names(rgt2)<-c('BBL', 'regulatory_tool')
  
   #########
-  u=unique(dbly$bbl)
-  r=list()
-  for (i in 1:length(u)){
-  r[[i]]=pgn[which(pgn$bbl==u[i]),2]
-  }
-  r[1:5]
+  #u=unique(dbly$bbl)
+  #r=list()
+  #for (i in 1:length(u)){
+  #r[[i]]=pgn[which(pgn$bbl==u[i]),2]
+  #}
+  #r[1:5]
  
-  u2=c()
-  for (i in 1:length(r))
-  {
-  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  }
-  u2[3]
+  #u2=c()
+  #for (i in 1:length(r))
+  #{
+  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  #}
+  #u2[3]
  
-  pgn2=data.table(cbind(u,u2))
-  names(pgn2)<-c('BBL', 'program_name')
+  #pgn2=data.table(cbind(u,u2))
+  #names(pgn2)<-c('BBL', 'program_name')
  
   ##########
-  u=unique(dbly$bbl)
-  r=list()
-  for (i in 1:length(u)){
-  r[[i]]=pjn[which(pjn$bbl==u[i]),2]
-  }
-  r[1:5]
+  #u=unique(dbly$bbl)
+  #r=list()
+  #for (i in 1:length(u)){
+  #r[[i]]=pjn[which(pjn$bbl==u[i]),2]
+  #}
+  #r[1:5]
  
-  u2=c()
-  for (i in 1:length(r))
-  {
-  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  }
-  u2[3]
+  #u2=c()
+  #for (i in 1:length(r))
+  #{
+  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  #}
+  #u2[3]
  
-  pjn2=data.table(cbind(u,u2))
-  names(pjn2)<-c('BBL', 'project_name')
+  #pjn2=data.table(cbind(u,u2))
+  #names(pjn2)<-c('BBL', 'project_name')
   ##########
-  u=unique(dbly$bbl)
-  r=list()
-  for (i in 1:length(u)){
-  r[[i]]=yec[which(yec$bbl==u[i]),2]
-  }
-  r[1:5]
+  #u=unique(dbly$bbl)
+  #r=list()
+  #for (i in 1:length(u)){
+  #r[[i]]=yec[which(yec$bbl==u[i]),2]
+  #}
+  #r[1:5]
  
-  u2=c()
-  for (i in 1:length(r))
-  {
-  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  }
-  u2[3]
+  #u2=c()
+  #for (i in 1:length(r))
+  #{
+  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  #}
+  #u2[3]
  
-  yec2=data.table(cbind(u,u2))
-  names(yec2)<-c('BBL', 'yrsexpirecat')
+  #yec2=data.table(cbind(u,u2))
+  #names(yec2)<-c('BBL', 'yrsexpirecat')
  
  
   ####join
   #library(dplyr)
  
-  v=data.frame(cbind(agn2,rgt2$regulatory_tool, pgn2$program_name, pjn2$project_name, yec2$yrsexpirecat))
+  #v=data.frame(cbind(agn2,rgt2$regulatory_tool, pgn2$program_name, pjn2$project_name, yec2$yrsexpirecat))
  
   #joining
-  library(dplyr)
-  v2=left_join(v,t,by=c("BBL"="BBL"))
+  #library(dplyr)
+  #v2=left_join(v,t,by=c("BBL"="BBL"))
  
  
-  f_sub=v2
-  names(f_sub)<- c('BBL','Agency_Names', 'Regulatory_Tools', 'Program_Names', 'Project_Names', 'Expiration_Category', 'Number_of_Subsidies')
+  #f_sub=v2
+  #names(f_sub)<- c('BBL','Agency_Names', 'Regulatory_Tools', 'Program_Names', 'Project_Names', 'Expiration_Category', 'Number_of_Subsidies')
  
   #make Na into none
  
-  f_sub[which(f_sub$Project_Names==""),5]<-"Not Provided"
-  f_sub[which(f_sub$Number_of_Subsidies==""),7]<-0
+  #f_sub[which(f_sub$Project_Names==""),5]<-"Not Provided"
+  #f_sub[which(f_sub$Number_of_Subsidies==""),7]<-0
  
   #save file
-  write.csv(f_sub, 'sub.csv', row.names=FALSE)
+  #write.csv(f_sub, 'sub.csv', row.names=FALSE)
  
 ###################################################
 # Dataset 6: Speculation Watchlist
@@ -870,59 +871,60 @@
   #scraped script to be inserted here
  
   #dataset has no api
-  stab=read.csv('stabilizedbldgs.csv')
+  #update this csv when new years list is posted
+  #stab=read.csv('stabilizedbldgs.csv')
  
-  dim(stab)
-  str(stab)
-  names(stab)
+  #dim(stab)
+  #str(stab)
+  #names(stab)
   #checking dataset
-  unique(stab$Brough)
-  class(stab$Brough)
+  #unique(stab$Brough)
+  #class(stab$Brough)
  
   #save a copy
-  stab2=stab
+  #stab2=stab
  
   #checking dataset
-  unique(stab$Brough)
+  #unique(stab$Brough)
   #as.character(stab$Lot)
   #as.character(stab$Block)
  
  
   #make borough column into character
-  boro=as.character(stab$Brough)
+  #boro=as.character(stab$Brough)
  
-  boro[which(boro=='BRONX')]<-'2'
-  boro[which(boro=='RONX')]<-'2'
-  boro[which(boro=='BROOKLYN')]<-'3'
-  boro[which(boro=='ROOKLYN')]<-'3'
-  boro[which(boro=='NEW YORK')]<-'1'
-  boro[which(boro=='EW YORK')]<-'1'
-  boro[which(boro=='STATEN ISLAND')]<-'5'
-  boro[which(nchar(boro)>1)]<-'4'
+  #boro[which(boro=='BRONX')]<-'2'
+  #boro[which(boro=='RONX')]<-'2'
+  #boro[which(boro=='BROOKLYN')]<-'3'
+  #boro[which(boro=='ROOKLYN')]<-'3'
+  #boro[which(boro=='NEW YORK')]<-'1'
+  #boro[which(boro=='EW YORK')]<-'1'
+  #boro[which(boro=='STATEN ISLAND')]<-'5'
+  #boro[which(nchar(boro)>1)]<-'4'
  
-  stab$boro=boro
+  #stab$boro=boro
  
-  stab$Block=str_pad(stab$Block, 5, pad = "0")
-  stab$Lot=str_pad(stab$Lot, 4, pad = "0")
-  stab$BBL=gsub(" ", "",paste(stab$boro, stab$Block, stab$Lot))
+  #stab$Block=str_pad(stab$Block, 5, pad = "0")
+  #stab$Lot=str_pad(stab$Lot, 4, pad = "0")
+  #stab$BBL=gsub(" ", "",paste(stab$boro, stab$Block, stab$Lot))
  
-  t=data.table(table(stab$BBL))
-  names(t)<-c('BBL','Rent_Stabilized_Bldgs')
+  #t=data.table(table(stab$BBL))
+  #names(t)<-c('BBL','Rent_Stabilized_Bldgs')
   #t$BBL=as.character(as.numeric(t$BBL))
  
   #join with subsidy file
  
   ####join
-  full_subrent=full_join(f_sub,t,by=c("BBL"="BBL"))
+  #full_subrent=full_join(f_sub,t,by=c("BBL"="BBL"))
  
   #make Na into none
  
-  full_subrent[which(is.na(full_subrent$Rent_Stabilized_Bldgs)==TRUE),8]<-0
+  #full_subrent[which(is.na(full_subrent$Rent_Stabilized_Bldgs)==TRUE),8]<-0
  
-  full_subrent[which(is.na(full_subrent$Number_of_Subsidies)==TRUE),7]<-0
+  #full_subrent[which(is.na(full_subrent$Number_of_Subsidies)==TRUE),7]<-0
  
   #save file
-  write.csv(full_subrent, 'sub_rent.csv', row.names=FALSE)
+  #write.csv(full_subrent, 'sub_rent.csv', row.names=FALSE)
  
 #####################################
 # Read in need shapefiles 
@@ -999,301 +1001,6 @@
   assembly <-st_read('State_Assembly_Districts/geo_export_743f1700-3b1c-469b-8489-808b1c49e6d3.shp') %>%
   st_transform("+proj=longlat +datum=WGS84")
 
-##########################################
-# MAIN DATASET: EVICTIONS
-#########################################
- 
-  ############################api read in
-  #link=https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=eviction_zip!='2700000'
-  #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
-  dat=Sys.Date()-1
-  p= paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date=','\'',dat,'\'',sep="")
-  e=read.socrata(p)
- 
-  ## saving a copy of original
-  e2=e
- 
-  ##########################checking dataset
-  names(e)
-  str(e)
-  #unique(e[,1])
-  #boros look good
-  #length(unique(e[,2]))
-  #length(unique(e[,3]))
-  #unique(e[,2])[1:10]
-  #there are couple duplicate court index #s and docket #s
-  #length(unique(e[,4]))
-  #unique(e[,4])[1:10]
-  #addresses need cleaning and also duplicate addresses
-  #unique(e[,5])[1:10]
-  #length(unique(e[,5]))
-  #missing apartment numbers
-  #min(e[,6])
-  #length(unique(e[,6]))
-  #all evictions have zipcode, 3, zipcodes have '00000', can get those zipcodes from geocoding
-  #unique(e[,7])[1:10]
-  #length(unique(e[,7]))
-  #min(e[,7])
-  #max(e[,7])
-  #class(e[,7])
-  #sort(unique(e[,7]), decreasing=TRUE)[1:5]
-  #there may be seasonality, trend in the executed dates, earliest date is 2017-01-03, latest date is 2070-03-29. There is only one, remove.
-  #length(unique(e[,8]))
-  #length(unique(e[,9]))
-  #unique(e[,8])
-  #unique(e[,9])
-  #cbind/paste marshall first and last name
-  #length(unique(e[,10]))
-  #unique(e[,10])
-  #residential and commercial type looks good
- # length(unique(e[,11]))
-  #unique(e[,11])
-  #only one value in scheduled status, 'scheduled', this dataset may not be the whole universe of evictions
- 
-  ####################cleaning dates & adding a Year column for grouping later
-  e$Executed_Date=as.Date(anytime(e$executed_date))
-  #e=e[-which(e$Executed_Date>Sys.Date()),]
-  e$Year=format(as.Date(e$Executed_Date, format="%d/%m/%Y"),"%Y")
-  ###################creating marshal's fullname column
-  #e$Marshal_Name=paste(e$marshal_first_name, e$marshal_last_name, sep=" ")
- 
-  ######################cleaning addresses
-  #aka
-  newadd_1=gsub('A/K/A', 'AKA', e$eviction_address)
-  #remove +
-  newadd_1=gsub("\\+", '', newadd_1)
-  #remove all periods
-  newadd_1=gsub('\\.', '', newadd_1)
-  #remove all commas
-  newadd_1=gsub('\\,', '', newadd_1)
-  #STREET
-  newadd_1=gsub("STREE T", 'STREET', newadd_1)
-  newadd_1=gsub("STR EET", 'STREET', newadd_1)
-  newadd_1=gsub("ST REET", 'STREET', newadd_1)
-  newadd_1=gsub("STRE ET", 'STREET', newadd_1)
-  newadd_1=gsub("S TREET", 'STREET', newadd_1)
-  #ROAD
-  newadd_1=gsub("ROA D", 'ROAD', newadd_1)
-  newadd_1=gsub("RO AD", 'ROAD', newadd_1)
-  newadd_1=gsub("R OAD", 'ROAD', newadd_1)
-  #AVENUE
-  newadd_1=gsub("AVENU E", 'AVENUE', newadd_1)
-  newadd_1=gsub("AVEN UE", 'AVENUE', newadd_1)
-  newadd_1=gsub("AVE NUE", 'AVENUE', newadd_1)
-  newadd_1=gsub("AV ENUE", 'AVENUE', newadd_1)
-  newadd_1=gsub("A VENUE", 'AVENUE', newadd_1)
-  newadd_1=gsub("AVNUE", 'AVENUE', newadd_1)
-  #PARKWAY
-  newadd_1=gsub("P ARKWAY", 'PARKWAY', newadd_1)
-  newadd_1=gsub("PA RKWAY", 'PARKWAY', newadd_1)
-  newadd_1=gsub("PAR KWAY", 'PARKWAY', newadd_1)
-  newadd_1=gsub("PARK WAY", 'PARKWAY', newadd_1)
-  newadd_1=gsub("PARKWA Y", 'PARKWAY', newadd_1)
-  newadd_1=gsub("PARKWA",'PARKWAY', newadd_1)
-  #HIGHWAY
-  newadd_1=gsub("HWY", 'HIGHWAY', newadd_1)
-  #NORTH
-  newadd_1=gsub("N ORTH", 'NORTH', newadd_1)
-  newadd_1=gsub("NOR TH", 'NORTH', newadd_1)
-  #SOUTH
-  newadd_1=gsub("SOUT H", 'SOUTH', newadd_1)
-  newadd_1=gsub("S OUTH", 'SOUTH', newadd_1)
-  newadd_1=gsub("SOU TH", 'SOUTH', newadd_1)
-  #BOULEVARD
-  newadd_1=gsub("BOULEVAR D", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("BOULEVA RD", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("BOULEV ARD", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("BOULE VARD", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("BOUL EVARD", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("BOU LEVARD", 'BOULEVARD', newadd_1)
-  newadd_1=gsub("B OULEVARD", 'BOULEVARD', newadd_1)
-  #BLVD
-  newadd_1=gsub("BLVD", 'BLVD', newadd_1)
-  newadd_1=gsub("BLV D", 'BLVD', newadd_1)
-  newadd_1=gsub("BL VD", 'BLVD', newadd_1)
-  newadd_1=gsub("B LVD", 'BLVD', newadd_1)
-  #remove double space
-  newadd_1=gsub("  ", " ", newadd_1)
- newadd_1=gsub("   ", " ", newadd_1)
-
-  ####
-  ## ask about keeping delimiters
-  # separate newadd_1 along 'apt'like words
-  spadd=strsplit(newadd_1,"APT|APARTMENT|#|UNIT|STREET -|AVENUE -|STREET-|ST - |AVE -|AVE-|ST- |PORTION|OFFICE|AKA|ENTIRE|FRONT RM|FRONT ENTRANCE|CORNER STORE|STREET LEVEL|1ST FLOOR|FIRST FLOOR|BSMT|FLOOR|SUITE|ON THE", perl=TRUE)
-
-  spadd1=c()
-  for(i in 1:length(spadd))
-  {
-  spadd1[i]=spadd[[i]][1]
-  }
-
-  #sp2add=strsplit(spadd1," ")
- 
-  ########geocode run: SFS single field search
- 
-  Gcode2<-function(Number,Borough){
- 
-  require(RCurl)
- 
-  u1="https://api.cityofnewyork.us/geoclient/v1/search.xml?input="
-  u2=paste0("&app_id=", Sys.getenv("GEOCLIENT_API_ID"), "&app_key=", Sys.getenv("GEOCLIENT_API_KEY"))
- 
-  p1=Number
-  p1=gsub(" ","%20",p1)
-  BR=Borough
-  BR=gsub(" ","%20",BR)
-  url=paste(c(u1,p1,BR,u2),collapse="")
-  TMP=getURL(url)
-
- 
-  xc=strsplit(TMP,"longitude>|</longitude")[[1]][2]
-  yc=strsplit(TMP,"latitude>|</latitude")[[1]][2]
-  #xz=strsplit(TMP,"zipCode>|</zipCode" )[[1]][2]
-  xbbl=strsplit(TMP, "bbl>|</bbl")[[1]][2]
- 
-  XY=c(xc,yc,xbbl)
-  names(XY)<-c("Longitude","Latitude", "BBL")
-  return(XY)
-  }
- 
-  ##now run geocoder in loop
-  #subset e to the rows that didnt geocode or geocoded incorrectly
- 
-  lat=c()
-  lon=c()
-  #zip2=c()
-  bbl=c()
-  for (i in 1:dim(e)[1])
-  #for (i in 1:5)
-  {
-  G=Gcode2(spadd1[i],e$borough[i])
-  lat[i]=G[2]
-  lon[i]=G[1]
-  #zip2[i]=G[3]
-  bbl[i]=G[3]
-  }
- 
-  ########################
-  ##update and write file
- 
-  e$latitude=lat
-  e$longitude=lon
-  #e$zip=zip
-  e$BBL=as.character(bbl)
-  e$Eviction_Address=spadd1
- 
-  e=e[,c(1,6,10,12:17)]
- 
-  #unable to geocode
-  length(which(is.na(e$latitude)==TRUE))
-  length(which(nchar(e$latitude)>25))
-  #6.5% is missing, below 10%
- 
-  #Remove NAs to create points shapefile
-  e=e[which(is.na(e$latitude)==FALSE),]
-  e=e[which(nchar(e$latitude)<25),]
- 
-  #Separte Res and Comm evictions, carto is being difficult with its sql query and styling, and geocoding quota limits
-  #ecomm=e[which(e$residential_commercial_ind=='Commercial'),]
-  eres=e[which(e$residential_commercial_ind=='Residential'),]
-  eres=data.table(eres)
-
-  #Number of evictons since 2018 at this addresses
-  all=data.table(table(eres$BBL))
-  names(all)<-c("BBL", "All_Evictions")
-  v=left_join(eres,all,by=c("BBL"="BBL"))
-  #v=left_join(v,df_nyc,by=c("BBL"="BBL"))
-  eres_map=as.data.table(v)
-  eres_map$latitude=as.numeric(eres_map$latitude)
-  eres_map$longitude=as.numeric(eres_map$longitude)
-
-  #read in previous days evictions and rowbind with todays
-  Nofun=fread("eres_map.csv")
-  Nofun$BBL=as.character(Nofun$BBL)
-  Nofun$Executed_Date=as.Date(Nofun$Executed_Date)
-  eres_map=rbind(Nofun,eres_map)
-
-  write.csv(eres_map,'eres_map.csv',row.names=FALSE)
-  #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
-
-#####################################
-# Evictions Residential layer
-####################################
-  eres_maply <- st_as_sf(eres_map, coords = c(7,6), crs = "+proj=longlat +datum=WGS84") %>%
-  st_transform("+proj=longlat +datum=WGS84")
-  #eres_maply=eres_maply[,-c(9:20)]
-  st_write(eres_maply, 'res_evictions.geojson', driver = "GeoJSON", delete_dsn=TRUE)
-
-######################################
-# Evictions Pluto layer
-####################################
-
-  cy=format(as.Date(Sys.Date(), format="%d/%m/%Y"),"%Y")
-  py=as.character(as.numeric(format(as.Date(Sys.Date(), format="%d/%m/%Y"),"%Y"))-1)
-
-  # total number of evictions for each bbl each year for eres
-  lastyr=data.table(table(eres_map[which(eres_map$Year==py),8]))
-  thisyr=data.table(table(eres_map[which(eres_map$Year==cy),8]))
-  names(lastyr)[1:2]<- c('BBL','Evictions_Last_Year')
-  names(thisyr)[1:2]<- c('BBL','Evictions_This_Year')
-
-  # total Number of evictons since 2017 at this addresses
-  all=data.table(table(eres_map$BBL))
-  names(all)<-c("BBL", "All_Evictions")
-
-  #eres$BBL=as.character(eres$BBL)
-  v=full_join(thisyr,lastyr,by=c("BBL"="BBL"))
-  v2=left_join(v,all,by=c("BBL"="BBL"))
-  v2[which(is.na(v2$Evictions_Last_Year)==TRUE),3]<-0
-  v2[which(is.na(v2$Evictions_This_Year)==TRUE),2]<-0
-
-  #add rent stabilization info
-  v2=left_join(v2,full_subrent,by=c("BBL"="BBL"))
-  v2=v2[,-c(5:9)]
-  v2[which(is.na(v2$Number_of_Subsidies)==TRUE),5]<-0
-  v2[which(is.na(v2$Rent_Stabilized_Bldgs)==TRUE),6]<-0
-
-  #add the other column info
-  v2=left_join(v2,as.data.table(f_dobecb), by=c("BBL"="BBL"))
-  v2=v2[,-c(7:10,12)]
-  v2[which(is.na(v2$Violations_Last_Year)==TRUE),7]<-0
-  names(v2)[7]<-'oath_vio_ly'
-
-  #add the other column info
-  v2=left_join(v2,as.data.table(f_hhw), by=c("BBL"="BBL"))
-  v2=v2[,-c(8:10,12)]
-  v2[which(is.na(v2$Requests_Last_Year)==TRUE),8]<-0
-  names(v2)[8]<-'hhw311_ly'
-
-  #add the other column info
-  v2=left_join(v2,as.data.table(f_hmc), by=c("BBL"="BBL"))
-  v2=v2[,-c(9:10,12)]
-  v2[which(is.na(v2$Violations_Last_Year)==TRUE),9]<-0
-  names(v2)[9]<-'hmc_ly'
-
-  #add the other column info
-  v2=left_join(v2,as.data.table(f_conh), by=c("BBL"="BBL"))
-  v2=v2[,-c(11)]
-  v2[which(is.na(v2$Number_of_Buildings)==TRUE),10]<-0
-  names(v2)[10]<-'conh_bldgs'
-
-  #add the other column info
-  v2=left_join(v2,as.data.table(f_spw), by=c("BBL"="BBL"))
-  v2=v2[,-c(11:16)]
-  v2[which(is.na(v2$Spec_LY)==TRUE),11]<-0
-  
-  f_er=v2
-  f_er$id=seq(1, nrow(v2), 1)
-  write.csv(f_er, 'f_er.csv',row.names=FALSE)
-  #er=read.csv('f_er.csv', stringsAsFactors=FALSE)
-
-  #evictions pluto geojson
-  nycer=nyc
-
-  nycer=left_join(nycer,f_er, by=c("BBL"="BBL"))
-  nycer=nycer[which(is.na(nycer$id)==FALSE),]
-  st_write(nycer, "res_evictions_pluto.geojson", driver = "GeoJSON", delete_dsn=TRUE)
-
 ######################################
 # other layers
 ####################################
@@ -1305,11 +1012,11 @@
   st_write(nycc,'conh_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #subsidies or rent stabilization
-  nycs=nyc
+  #nycs=nyc
 
-  nycs=left_join(nycs,full_subrent, by=c("BBL"="BBL"))
-  nycs=nycs[which(is.na(nycs$Number_of_Subsidies)==FALSE),]
-  st_write(nycs,'subsidies_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
+  #nycs=left_join(nycs,full_subrent, by=c("BBL"="BBL"))
+  #nycs=nycs[which(is.na(nycs$Number_of_Subsidies)==FALSE),]
+  #st_write(nycs,'subsidies_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #heat hot water
   nych=nyc
@@ -1339,112 +1046,414 @@
   nycw=nycw[which(is.na(nycw$Price)==FALSE),]
   st_write(nycd,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
-
-##############################################
-# Spatial joins
-##############################################
-  #spatial join with zipcode shapefile
-  #columns needed, eviction sum
-  zip_sj <- st_join(zip_sf, eres_maply %>% st_transform(st_crs(zip_sf)), st_intersects) %>%
-    as.data.frame() %>% 
-      group_by(ZIPCODE) %>%
-      summarize(count_evictions = sum(!is.na(All_Evictions))) %>% 
-    left_join(zip_sf, by="ZIPCODE") %>% 
-    st_as_sf()
-  zip_sj <- st_join(zip_sj, nyc %>% st_transform(st_crs(zip_sj)), st_intersects) %>%
-    as.data.frame() %>% 
-    group_by(ZIPCODE, count_evictions) %>%
-    summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
-    left_join(zip_sf, by="ZIPCODE") %>% 
-    st_as_sf()
-
-  st_write(zip_sj, "zip_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
-
-
-
-  #hex units res totals
-  #nyct=as.data.table(nyc)
-    hex_sj <- st_join(hex, eres_maply %>% st_transform(st_crs(hex)), st_intersects) %>%
-      as.data.frame() %>%
-        group_by(ID) %>%
-        summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
-      left_join(hex) %>%
-      st_as_sf()
-    hex_sj <- st_join(hex_sj, nyc %>% st_transform(st_crs(hex)), st_intersects) %>%
-      group_by(ID, count_evictions) %>%
-      summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE), CC=Mode(Council), CD=Mode(CD), Zip=Mode(ZipCode))
-
-    st_write(hex_sj, "hex_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
-
-
-
-  #spatial join with cd shapefile
-  #columns needed, eviction sum
-
-  cd_sj <- st_join(cd_sf, eres_maply %>% st_transform(st_crs(cd_sf)), st_intersects) %>%
-    as.data.frame() %>%
-      group_by(boro_cd) %>%
-      summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
-    left_join (cd_sf, by="boro_cd") %>%
-    st_as_sf()
-  cd_sj <- st_join(cd_sj, nyc %>% st_transform(st_crs(cd_sj)), st_intersects) %>%
-    as.data.frame() %>% 
-      group_by(boro_cd, count_evictions) %>%
-      summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
-    left_join(cd_sf, by="boro_cd") %>% 
-    st_as_sf()
-
-  st_write(cd_sj, "cd_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
-
-
-  #spatial join with cc shapefile
-  #columns needed, eviction sum
+##########################################
+# MAIN DATASET: EVICTIONS
+#########################################
  
-  cc_sj <- st_join(cc_sf, eres_maply %>% st_transform(st_crs(cc_sf)), st_intersects) %>%
-    as.data.frame() %>% 
-      group_by(coun_dist) %>%
-      summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
-    left_join(cc_sf, by = "coun_dist") %>% 
-    st_as_sf()
-  cc_sj <- st_join(cc_sj, nyc %>% st_transform(st_crs(cc_sj)), st_intersects) %>%
-    as.data.frame() %>% 
-      group_by(coun_dist, count_evictions) %>%
-      summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
-    left_join(cc_sf, by="coun_dist") %>% 
-    st_as_sf()
+  ############################api read in
+  #link=https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=eviction_zip!='2700000'
+  #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
+  dat=Sys.Date()-1
+  p= paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date=','\'',dat,'\'',sep="")
+  e=read.socrata(p)
+ 
+  #if statement
 
-  st_write(cc_sj, "cc_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+  if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
+    e2=e
+    ##########################checking dataset
+    names(e)
+    str(e)
+    unique(e[,1])
+    #boros look good
+    length(unique(e[,2]))
+    length(unique(e[,3]))
+    unique(e[,2])[1:10]
+    #there are couple duplicate court index #s and docket #s
+    length(unique(e[,4]))
+    unique(e[,4])[1:10]
+    #addresses need cleaning and also duplicate addresses
+    unique(e[,5])[1:10]
+    length(unique(e[,5]))
+    #missing apartment numbers
+    min(e[,6])
+    length(unique(e[,6]))
+    #all evictions have zipcode, 3, zipcodes have '00000', can get those zipcodes from geocoding
+    unique(e[,7])[1:10]
+    length(unique(e[,7]))
+    min(e[,7])
+    max(e[,7])
+    class(e[,7])
+    sort(unique(e[,7]), decreasing=TRUE)[1:5]
+    #there may be seasonality, trend in the executed dates, earliest date is 2017-01-03, latest date is 2070-03-29. There is only one, remove.
+    length(unique(e[,8]))
+    length(unique(e[,9]))
+    unique(e[,8])
+    unique(e[,9])
+    #cbind/paste marshall first and last name
+    length(unique(e[,10]))
+    unique(e[,10])
+    #residential and commercial type looks good
+    length(unique(e[,11]))
+    unique(e[,11])
+    #only one value in scheduled status, 'scheduled', this dataset may not be the whole universe of evictions
+   
+    ####################cleaning dates & adding a Year column for grouping later
+    e$Executed_Date=as.Date(anytime(e$executed_date))
+    e=e[-which(e$Executed_Date>Sys.Date()),]
+    e$Year=format(as.Date(e$Executed_Date, format="%d/%m/%Y"),"%Y")
+    ###################creating marshal's fullname column
+    #e$Marshal_Name=paste(e$marshal_first_name, e$marshal_last_name, sep=" ")
+   
+    ######################cleaning addresses
+    #aka
+    newadd_1=gsub('A/K/A', 'AKA', e$eviction_address)
+    #remove +
+    newadd_1=gsub("\\+", '', newadd_1)
+    #remove all periods
+    newadd_1=gsub('\\.', '', newadd_1)
+    #remove all commas
+    newadd_1=gsub('\\,', '', newadd_1)
+    #STREET
+    newadd_1=gsub("STREE T", 'STREET', newadd_1)
+    newadd_1=gsub("STR EET", 'STREET', newadd_1)
+    newadd_1=gsub("ST REET", 'STREET', newadd_1)
+    newadd_1=gsub("STRE ET", 'STREET', newadd_1)
+    newadd_1=gsub("S TREET", 'STREET', newadd_1)
+    #ROAD
+    newadd_1=gsub("ROA D", 'ROAD', newadd_1)
+    newadd_1=gsub("RO AD", 'ROAD', newadd_1)
+    newadd_1=gsub("R OAD", 'ROAD', newadd_1)
+    #AVENUE
+    newadd_1=gsub("AVENU E", 'AVENUE', newadd_1)
+    newadd_1=gsub("AVEN UE", 'AVENUE', newadd_1)
+    newadd_1=gsub("AVE NUE", 'AVENUE', newadd_1)
+    newadd_1=gsub("AV ENUE", 'AVENUE', newadd_1)
+    newadd_1=gsub("A VENUE", 'AVENUE', newadd_1)
+    newadd_1=gsub("AVNUE", 'AVENUE', newadd_1)
+    #PARKWAY
+    newadd_1=gsub("P ARKWAY", 'PARKWAY', newadd_1)
+    newadd_1=gsub("PA RKWAY", 'PARKWAY', newadd_1)
+    newadd_1=gsub("PAR KWAY", 'PARKWAY', newadd_1)
+    newadd_1=gsub("PARK WAY", 'PARKWAY', newadd_1)
+    newadd_1=gsub("PARKWA Y", 'PARKWAY', newadd_1)
+    newadd_1=gsub("PARKWA",'PARKWAY', newadd_1)
+    #HIGHWAY
+    newadd_1=gsub("HWY", 'HIGHWAY', newadd_1)
+    #NORTH
+    newadd_1=gsub("N ORTH", 'NORTH', newadd_1)
+    newadd_1=gsub("NOR TH", 'NORTH', newadd_1)
+    #SOUTH
+    newadd_1=gsub("SOUT H", 'SOUTH', newadd_1)
+    newadd_1=gsub("S OUTH", 'SOUTH', newadd_1)
+    newadd_1=gsub("SOU TH", 'SOUTH', newadd_1)
+    #BOULEVARD
+    newadd_1=gsub("BOULEVAR D", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("BOULEVA RD", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("BOULEV ARD", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("BOULE VARD", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("BOUL EVARD", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("BOU LEVARD", 'BOULEVARD', newadd_1)
+    newadd_1=gsub("B OULEVARD", 'BOULEVARD', newadd_1)
+    #BLVD
+    newadd_1=gsub("BLVD", 'BLVD', newadd_1)
+    newadd_1=gsub("BLV D", 'BLVD', newadd_1)
+    newadd_1=gsub("BL VD", 'BLVD', newadd_1)
+    newadd_1=gsub("B LVD", 'BLVD', newadd_1)
+    #remove double space
+    newadd_1=gsub("  ", " ", newadd_1)
+    newadd_1=gsub("   ", " ", newadd_1)
 
-  
-  #spatial join senate
-  sen_sj <- st_join(senate, eres_maply %>% st_transform(st_crs(senate)), st_intersects) %>%
-    as.data.frame() %>% 
-      group_by(st_sen_dis) %>%
-      summarize(count_evictions = sum(!is.na(All_Evictions))) %>% 
-    left_join(senate, by = "st_sen_dis") %>% 
-    st_as_sf()
-  sen_sj <- st_join(sen_sj, nyc %>% st_transform(st_crs(sen_sj)), st_intersects) %>%
-    as.data.frame() %>% 
-    group_by(st_sen_dis, count_evictions) %>%
-    summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
-    left_join(senate, by = "st_sen_dis") %>% 
-    st_as_sf()
+    ####
+    ## ask about keeping delimiters
+    # separate newadd_1 along 'apt'like words
+    spadd=strsplit(newadd_1,"APT|APARTMENT|#|UNIT|STREET -|AVENUE -|STREET-|ST - |AVE -|AVE-|ST- |PORTION|OFFICE|AKA|ENTIRE|FRONT RM|FRONT ENTRANCE|CORNER STORE|STREET LEVEL|1ST FLOOR|FIRST FLOOR|BSMT|FLOOR|SUITE|ON THE", perl=TRUE)
 
-  st_write(sen_sj, "sen_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+    spadd1=c()
+    for(i in 1:length(spadd))
+    {
+    spadd1[i]=spadd[[i]][1]
+    }
+
+    #sp2add=strsplit(spadd1," ")
+   
+    ########geocode run: SFS single field search
+   
+    Gcode2<-function(Number,Borough){
+   
+    require(RCurl)
+   
+    u1="https://api.cityofnewyork.us/geoclient/v1/search.xml?input="
+    u2=paste0("&app_id=", Sys.getenv("GEOCLIENT_API_ID"), "&app_key=", Sys.getenv("GEOCLIENT_API_KEY"))
+   
+    p1=Number
+    p1=gsub(" ","%20",p1)
+    BR=Borough
+    BR=gsub(" ","%20",BR)
+    url=paste(c(u1,p1,BR,u2),collapse="")
+    TMP=getURL(url)
+
+   
+    xc=strsplit(TMP,"longitude>|</longitude")[[1]][2]
+    yc=strsplit(TMP,"latitude>|</latitude")[[1]][2]
+    #xz=strsplit(TMP,"zipCode>|</zipCode" )[[1]][2]
+    xbbl=strsplit(TMP, "bbl>|</bbl")[[1]][2]
+   
+    XY=c(xc,yc,xbbl)
+    names(XY)<-c("Longitude","Latitude", "BBL")
+    return(XY)
+    }
+   
+    ##now run geocoder in loop
+    #subset e to the rows that didnt geocode or geocoded incorrectly
+   
+    lat=c()
+    lon=c()
+    #zip2=c()
+    bbl=c()
+    for (i in 1:dim(e)[1])
+    #for (i in 1:5)
+    {
+    G=Gcode2(spadd1[i],e$borough[i])
+    lat[i]=G[2]
+    lon[i]=G[1]
+    #zip2[i]=G[3]
+    bbl[i]=G[3]
+    }
+   
+    ########################
+    ##update and write file
+   
+    e$latitude=lat
+    e$longitude=lon
+    #e$zip=zip
+    e$BBL=as.character(bbl)
+    e$Eviction_Address=spadd1
+   
+    e2=e
+
+    e=e[,c(1,6,10,12:17)]
+   
+    #unable to geocode
+    length(which(is.na(e$latitude)==TRUE))
+    length(which(nchar(e$latitude)>25))
+    #6.5% is missing, below 10%
+   
+    #Remove NAs to create points shapefile
+    e=e[which(is.na(e$latitude)==FALSE),]
+    e=e[which(nchar(e$latitude)<25),]
+   
+    #Separte Res and Comm evictions, carto is being difficult with its sql query and styling, and geocoding quota limits
+    #ecomm=e[which(e$residential_commercial_ind=='Commercial'),]
+    eres=e[which(e$residential_commercial_ind=='Residential'),]
+    eres=data.table(eres)
+
+    #Number of evictons since 2018 at this addresses
+    all=data.table(table(eres$BBL))
+    names(all)<-c("BBL", "All_Evictions")
+    v=left_join(eres,all,by=c("BBL"="BBL"))
+    #v=left_join(v,df_nyc,by=c("BBL"="BBL"))
+    eres_map=as.data.table(v)
+    eres_map$latitude=as.numeric(eres_map$latitude)
+    eres_map$longitude=as.numeric(eres_map$longitude)
+
+    #read in previous days evictions and rowbind with todays
+    Nofun=fread("eres_map.csv")
+    Nofun$BBL=as.character(Nofun$BBL)
+    Nofun$Executed_Date=as.Date(Nofun$Executed_Date)
+    eres_map=rbind(Nofun,eres_map)
+
+    write.csv(eres_map,'eres_map.csv',row.names=FALSE)
+    #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
+
+    #####################################
+    # Evictions Residential layer
+    ####################################
+      eres_maply <- st_as_sf(eres_map, coords = c(7,6), crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
+      #eres_maply=eres_maply[,-c(9:20)]
+      st_write(eres_maply, 'res_evictions.geojson', driver = "GeoJSON", delete_dsn=TRUE)
+
+    ######################################
+    # Evictions Pluto layer
+    ####################################
+
+      cy=format(as.Date(Sys.Date(), format="%d/%m/%Y"),"%Y")
+      py=as.character(as.numeric(format(as.Date(Sys.Date(), format="%d/%m/%Y"),"%Y"))-1)
+
+      # total number of evictions for each bbl each year for eres
+      lastyr=data.table(table(eres_map[which(eres_map$Year==py),8]))
+      thisyr=data.table(table(eres_map[which(eres_map$Year==cy),8]))
+      names(lastyr)[1:2]<- c('BBL','Evictions_Last_Year')
+      names(thisyr)[1:2]<- c('BBL','Evictions_This_Year')
+
+      # total Number of evictons since 2017 at this addresses
+      all=data.table(table(eres_map$BBL))
+      names(all)<-c("BBL", "All_Evictions")
+
+      #eres$BBL=as.character(eres$BBL)
+      v=full_join(thisyr,lastyr,by=c("BBL"="BBL"))
+      v2=left_join(v,all,by=c("BBL"="BBL"))
+      v2[which(is.na(v2$Evictions_Last_Year)==TRUE),3]<-0
+      v2[which(is.na(v2$Evictions_This_Year)==TRUE),2]<-0
+
+      #add rent stabilization info
+      v2=left_join(v2,full_subrent,by=c("BBL"="BBL"))
+      v2=v2[,-c(5:9)]
+      v2[which(is.na(v2$Number_of_Subsidies)==TRUE),5]<-0
+      v2[which(is.na(v2$Rent_Stabilized_Bldgs)==TRUE),6]<-0
+
+      #add the other column info
+      v2=left_join(v2,as.data.table(f_dobecb), by=c("BBL"="BBL"))
+      v2=v2[,-c(7:10,12)]
+      v2[which(is.na(v2$Violations_Last_Year)==TRUE),7]<-0
+      names(v2)[7]<-'oath_vio_ly'
+
+      #add the other column info
+      v2=left_join(v2,as.data.table(f_hhw), by=c("BBL"="BBL"))
+      v2=v2[,-c(8:10,12)]
+      v2[which(is.na(v2$Requests_Last_Year)==TRUE),8]<-0
+      names(v2)[8]<-'hhw311_ly'
+
+      #add the other column info
+      v2=left_join(v2,as.data.table(f_hmc), by=c("BBL"="BBL"))
+      v2=v2[,-c(9:10,12)]
+      v2[which(is.na(v2$Violations_Last_Year)==TRUE),9]<-0
+      names(v2)[9]<-'hmc_ly'
+
+      #add the other column info
+      v2=left_join(v2,as.data.table(f_conh), by=c("BBL"="BBL"))
+      v2=v2[,-c(11)]
+      v2[which(is.na(v2$Number_of_Buildings)==TRUE),10]<-0
+      names(v2)[10]<-'conh_bldgs'
+
+      #add the other column info
+      v2=left_join(v2,as.data.table(f_spw), by=c("BBL"="BBL"))
+      v2=v2[,-c(11:16)]
+      v2[which(is.na(v2$Spec_LY)==TRUE),11]<-0
+      
+      f_er=v2
+      f_er$id=seq(1, nrow(v2), 1)
+      write.csv(f_er, 'f_er.csv',row.names=FALSE)
+      #er=read.csv('f_er.csv', stringsAsFactors=FALSE)
+
+      #evictions pluto geojson
+      nycer=nyc
+
+      nycer=left_join(nycer,f_er, by=c("BBL"="BBL"))
+      nycer=nycer[which(is.na(nycer$id)==FALSE),]
+      st_write(nycer, "res_evictions_pluto.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+    ##############################################
+    # Spatial joins
+    ##############################################
+      #spatial join with zipcode shapefile
+      #columns needed, eviction sum
+      zip_sj <- st_join(zip_sf, eres_maply %>% st_transform(st_crs(zip_sf)), st_intersects) %>%
+        as.data.frame() %>% 
+          group_by(ZIPCODE) %>%
+          summarize(count_evictions = sum(!is.na(All_Evictions))) %>% 
+        left_join(zip_sf, by="ZIPCODE") %>% 
+        st_as_sf()
+      zip_sj <- st_join(zip_sj, nyc %>% st_transform(st_crs(zip_sj)), st_intersects) %>%
+        as.data.frame() %>% 
+        group_by(ZIPCODE, count_evictions) %>%
+        summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
+        left_join(zip_sf, by="ZIPCODE") %>% 
+        st_as_sf()
+
+      st_write(zip_sj, "zip_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
 
 
 
-  #spatial join assembly
-  assem_sj <- st_join(assembly, eres_maply %>% st_transform(st_crs(assembly)), st_intersects) %>%
-  as.data.frame()%>%
-      group_by(assem_dist) %>%
-      summarize(count_evictions = sum(!is.na(All_Evictions)))%>%
-      left_join(assembly, by = "assem_dist")%>%
-      st_as_sf()
-  assem_sj <- st_join(assem_sj, nyc %>% st_transform(st_crs(assem_sj)), st_intersects) %>%
-    as.data.frame()%>%
-    group_by(assem_dist , count_evictions) %>%
-    summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>%
-    left_join(assembly, by = "assem_dist") %>%
-    st_as_sf()
-  st_write(assem_sj, "assembly_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+      #hex units res totals
+      #nyct=as.data.table(nyc)
+        hex_sj <- st_join(hex, eres_maply %>% st_transform(st_crs(hex)), st_intersects) %>%
+          as.data.frame() %>%
+            group_by(ID) %>%
+            summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
+          left_join(hex) %>%
+          st_as_sf()
+        hex_sj <- st_join(hex_sj, nyc %>% st_transform(st_crs(hex)), st_intersects) %>%
+          group_by(ID, count_evictions) %>%
+          summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE), CC=Mode(Council), CD=Mode(CD), Zip=Mode(ZipCode))
+
+        st_write(hex_sj, "hex_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+
+
+      #spatial join with cd shapefile
+      #columns needed, eviction sum
+
+      cd_sj <- st_join(cd_sf, eres_maply %>% st_transform(st_crs(cd_sf)), st_intersects) %>%
+        as.data.frame() %>%
+          group_by(boro_cd) %>%
+          summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
+        left_join (cd_sf, by="boro_cd") %>%
+        st_as_sf()
+      cd_sj <- st_join(cd_sj, nyc %>% st_transform(st_crs(cd_sj)), st_intersects) %>%
+        as.data.frame() %>% 
+          group_by(boro_cd, count_evictions) %>%
+          summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
+        left_join(cd_sf, by="boro_cd") %>% 
+        st_as_sf()
+
+      st_write(cd_sj, "cd_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+
+      #spatial join with cc shapefile
+      #columns needed, eviction sum
+     
+      cc_sj <- st_join(cc_sf, eres_maply %>% st_transform(st_crs(cc_sf)), st_intersects) %>%
+        as.data.frame() %>% 
+          group_by(coun_dist) %>%
+          summarize(count_evictions = sum(!is.na(All_Evictions))) %>%
+        left_join(cc_sf, by = "coun_dist") %>% 
+        st_as_sf()
+      cc_sj <- st_join(cc_sj, nyc %>% st_transform(st_crs(cc_sj)), st_intersects) %>%
+        as.data.frame() %>% 
+          group_by(coun_dist, count_evictions) %>%
+          summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
+        left_join(cc_sf, by="coun_dist") %>% 
+        st_as_sf()
+
+      st_write(cc_sj, "cc_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+      
+      #spatial join senate
+      sen_sj <- st_join(senate, eres_maply %>% st_transform(st_crs(senate)), st_intersects) %>%
+        as.data.frame() %>% 
+          group_by(st_sen_dis) %>%
+          summarize(count_evictions = sum(!is.na(All_Evictions))) %>% 
+        left_join(senate, by = "st_sen_dis") %>% 
+        st_as_sf()
+      sen_sj <- st_join(sen_sj, nyc %>% st_transform(st_crs(sen_sj)), st_intersects) %>%
+        as.data.frame() %>% 
+        group_by(st_sen_dis, count_evictions) %>%
+        summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>% 
+        left_join(senate, by = "st_sen_dis") %>% 
+        st_as_sf()
+
+      st_write(sen_sj, "sen_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+
+
+      #spatial join assembly
+      assem_sj <- st_join(assembly, eres_maply %>% st_transform(st_crs(assembly)), st_intersects) %>%
+      as.data.frame()%>%
+          group_by(assem_dist) %>%
+          summarize(count_evictions = sum(!is.na(All_Evictions)))%>%
+          left_join(assembly, by = "assem_dist")%>%
+          st_as_sf()
+      assem_sj <- st_join(assem_sj, nyc %>% st_transform(st_crs(assem_sj)), st_intersects) %>%
+        as.data.frame()%>%
+        group_by(assem_dist , count_evictions) %>%
+        summarize(sum_resunits = sum(UnitsRes, na.rm = TRUE)) %>%
+        left_join(assembly, by = "assem_dist") %>%
+        st_as_sf()
+      st_write(assem_sj, "assembly_res.geojson", driver = "GeoJSON", delete_dsn=TRUE)
+
+
+    ##end script if e is empty
+  }else{print('e is empty')}
+
