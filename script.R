@@ -1230,7 +1230,7 @@
    
     e2=e
 
-    e=e[,c(1,6,10,12:17)]
+    e=e[,c(1,5,9,11:16)]
    
     #unable to geocode
     length(which(is.na(e$latitude)==TRUE))
