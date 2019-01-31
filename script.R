@@ -499,184 +499,184 @@
  
   #dataset has no api
   #update this csv when dataset is updated on furman center
-  #sub=read.csv('SubsidizedHousingFurman.csv')
+  sub=read.csv('SubsidizedHousingFurman.csv')
  
-  #dim(sub)
-  #str(sub)
-  #names(sub)
-  #min(sub$bbl)
+  dim(sub)
+  str(sub)
+  names(sub)
+  min(sub$bbl)
  
   #save a copy
-  #sub2=sub
+  sub2=sub
  
   #checking dataset
-  #unique(sub$agency_name)
-  #unique(sub$regulatory_tool)
-  #unique(sub$program_name)
-  #length(unique(sub$project_name))
+  unique(sub$agency_name)
+  unique(sub$regulatory_tool)
+  unique(sub$program_name)
+  length(unique(sub$project_name))
  
   #change bbl class to character
-  #sub$bbl=as.character(as.numeric(sub$bbl))
+  sub$bbl=as.character(as.numeric(sub$bbl))
  
   #getting expiration period 0-5, 5-10, 10-15, 15+
-  #library(anytime)
-  #end=anytime(as.character(sub$end_date))
-  #endyr=format(as.Date(end, format="%d/%m/%Y"),"%Y")
-  #currentyr=format(as.Date(Sys.time(), format="%d/%m/%Y"),"%Y")
-  #yrsexpire=as.numeric(endyr)-as.numeric(currentyr)
-  #yrsexpirecat=yrsexpire
-  #summary(yrsexpire)
-  #summary(endyr)
-  #class(yrsexpirecat)
+  library(anytime)
+  end=anytime(as.character(sub$end_date))
+  endyr=format(as.Date(end, format="%d/%m/%Y"),"%Y")
+  currentyr=format(as.Date(Sys.time(), format="%d/%m/%Y"),"%Y")
+  yrsexpire=as.numeric(endyr)-as.numeric(currentyr)
+  yrsexpirecat=yrsexpire
+  summary(yrsexpire)
+  summary(endyr)
+  class(yrsexpirecat)
  
-  #w1=which(yrsexpire>14)
-  #w2=which(yrsexpire<0)
-  #w3=which(yrsexpire>-1 & yrsexpire<5)
-  #w4=which(yrsexpire>4 & yrsexpire<10)
-  #w5=which(yrsexpire>9 & yrsexpire<15)
-  #w6=which(is.na(yrsexpire)==TRUE)
+  w1=which(yrsexpire>14)
+  w2=which(yrsexpire<0)
+  w3=which(yrsexpire>-1 & yrsexpire<5)
+  w4=which(yrsexpire>4 & yrsexpire<10)
+  w5=which(yrsexpire>9 & yrsexpire<15)
+  w6=which(is.na(yrsexpire)==TRUE)
  
-  #yrsexpirecat[1:5]
-  #yrsexpire[1:5]
+  yrsexpirecat[1:5]
+  yrsexpire[1:5]
  
-  #yrsexpirecat[w1]<-"15 or more years"
-  #yrsexpirecat[w2]<-"Already Expired"
-  #yrsexpirecat[w3]<-"Less than 5 years"
-  #yrsexpirecat[w4]<-"Between 5-9 years"
-  #yrsexpirecat[w5]<-"Between 10-14 years"
-  #yrsexpirecat[w6]<-"Permanentaly Affordable"
+  yrsexpirecat[w1]<-"15 or more years"
+  yrsexpirecat[w2]<-"Already Expired"
+  yrsexpirecat[w3]<-"Less than 5 years"
+  yrsexpirecat[w4]<-"Between 5-9 years"
+  yrsexpirecat[w5]<-"Between 10-14 years"
+  yrsexpirecat[w6]<-"Permanentaly Affordable"
  
-  #yrsexpire[1:5]
-  #yrsexpirecat[1:5]
-  #unique(yrsexpire)
-  #unique(yrsexpirecat)
+  yrsexpire[1:5]
+  yrsexpirecat[1:5]
+  unique(yrsexpire)
+  unique(yrsexpirecat)
  
-  #sub$yrsexpire=yrsexpire
-  #sub$yrsexpirecat=yrsexpirecat
+  sub$yrsexpire=yrsexpire
+  sub$yrsexpirecat=yrsexpirecat
  
-  #t=data.table(table(sub$bbl))
-  #names(t)<-c('BBL','Number_of_Subsidies')
-  #t$BBL=as.character(as.numeric(t$BBL))
+  t=data.table(table(sub$bbl))
+  names(t)<-c('BBL','Number_of_Subsidies')
+  t$BBL=as.character(as.numeric(t$BBL))
  
   #getting all the agency names, regulatory tools, program names, and project names for a unique bbl
   #subsettting conh
-  #dbly=data.table(sub[,c(1,5:8,33)])
-  #setkey(dbly, key='bbl')
-  #agn=dbly[,agency_name, by=.(bbl)]
-  #rgt=dbly[,regulatory_tool, by=.(bbl)]
-  #pgn=dbly[,program_name, by=.(bbl)]
-  #pjn=dbly[,project_name, by=.(bbl)]
-  #yec=dbly[,yrsexpirecat, by=.(bbl)]
+  dbly=data.table(sub[,c(1,5:8,33)])
+  setkey(dbly, key='bbl')
+  agn=dbly[,agency_name, by=.(bbl)]
+  rgt=dbly[,regulatory_tool, by=.(bbl)]
+  pgn=dbly[,program_name, by=.(bbl)]
+  pjn=dbly[,project_name, by=.(bbl)]
+  yec=dbly[,yrsexpirecat, by=.(bbl)]
  
   ####loop
-  #u=unique(dbly$bbl)
-  #r=list()
-  #for (i in 1:length(u)){
-  #r[[i]]=agn[which(agn$bbl==u[i]),2]
-  #}
-  #r[1:5]
+  u=unique(dbly$bbl)
+  r=list()
+  for (i in 1:length(u)){
+  r[[i]]=agn[which(agn$bbl==u[i]),2]
+  }
+  r[1:5]
  
-  #u2=c()
-  #for (i in 1:length(r))
-  #{
-  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  #}
-  #u2[3]
+  u2=c()
+  for (i in 1:length(r))
+  {
+  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  }
+  u2[3]
  
-  #agn2=data.table(cbind(u,u2))
-  #names(agn2)<-c('BBL', 'agency_name')
+  agn2=data.table(cbind(u,u2))
+  names(agn2)<-c('BBL', 'agency_name')
   ###############
-  #u=unique(dbly$bbl)
-  #r=list()
-  #for (i in 1:length(u)){
-  #r[[i]]=rgt[which(rgt$bbl==u[i]),2]
-  #}
-  #r[1:5]
+  u=unique(dbly$bbl)
+  r=list()
+  for (i in 1:length(u)){
+  r[[i]]=rgt[which(rgt$bbl==u[i]),2]
+  }
+  r[1:5]
  
-  #u2=c()
-  #for (i in 1:length(r))
-  #{
-  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  #}
-  #u2[3]
+  u2=c()
+  for (i in 1:length(r))
+  {
+  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  }
+  u2[3]
  
-  #rgt2=data.table(cbind(u,u2))
-  #names(rgt2)<-c('BBL', 'regulatory_tool')
+  rgt2=data.table(cbind(u,u2))
+  names(rgt2)<-c('BBL', 'regulatory_tool')
  
   #########
-  #u=unique(dbly$bbl)
-  #r=list()
-  #for (i in 1:length(u)){
-  #r[[i]]=pgn[which(pgn$bbl==u[i]),2]
-  #}
-  #r[1:5]
+  u=unique(dbly$bbl)
+  r=list()
+  for (i in 1:length(u)){
+  r[[i]]=pgn[which(pgn$bbl==u[i]),2]
+  }
+  r[1:5]
  
-  #u2=c()
-  #for (i in 1:length(r))
-  #{
-  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  #}
-  #u2[3]
+  u2=c()
+  for (i in 1:length(r))
+  {
+  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  }
+  u2[3]
  
-  #pgn2=data.table(cbind(u,u2))
-  #names(pgn2)<-c('BBL', 'program_name')
+  pgn2=data.table(cbind(u,u2))
+  names(pgn2)<-c('BBL', 'program_name')
  
   ##########
-  #u=unique(dbly$bbl)
-  #r=list()
-  #for (i in 1:length(u)){
-  #r[[i]]=pjn[which(pjn$bbl==u[i]),2]
-  #}
-  #r[1:5]
+  u=unique(dbly$bbl)
+  r=list()
+  for (i in 1:length(u)){
+  r[[i]]=pjn[which(pjn$bbl==u[i]),2]
+  }
+  r[1:5]
  
-  #u2=c()
-  #for (i in 1:length(r))
-  #{
-  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  #}
-  #u2[3]
+  u2=c()
+  for (i in 1:length(r))
+  {
+  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  }
+  u2[3]
  
-  #pjn2=data.table(cbind(u,u2))
-  #names(pjn2)<-c('BBL', 'project_name')
+  pjn2=data.table(cbind(u,u2))
+  names(pjn2)<-c('BBL', 'project_name')
   ##########
-  #u=unique(dbly$bbl)
-  #r=list()
-  #for (i in 1:length(u)){
-  #r[[i]]=yec[which(yec$bbl==u[i]),2]
-  #}
-  #r[1:5]
+  u=unique(dbly$bbl)
+  r=list()
+  for (i in 1:length(u)){
+  r[[i]]=yec[which(yec$bbl==u[i]),2]
+  }
+  r[1:5]
  
-  #u2=c()
-  #for (i in 1:length(r))
-  #{
-  #u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
-  #}
-  #u2[3]
+  u2=c()
+  for (i in 1:length(r))
+  {
+  u2[i]=paste(sort(unique(unlist(r[[i]]))),  collapse=", ")
+  }
+  u2[3]
  
-  #yec2=data.table(cbind(u,u2))
-  #names(yec2)<-c('BBL', 'yrsexpirecat')
+  yec2=data.table(cbind(u,u2))
+  names(yec2)<-c('BBL', 'yrsexpirecat')
  
  
   ####join
-  #library(dplyr)
+  library(dplyr)
  
-  #v=data.frame(cbind(agn2,rgt2$regulatory_tool, pgn2$program_name, pjn2$project_name, yec2$yrsexpirecat))
+  v=data.frame(cbind(agn2,rgt2$regulatory_tool, pgn2$program_name, pjn2$project_name, yec2$yrsexpirecat))
  
   #joining
   #library(dplyr)
-  #v2=left_join(v,t,by=c("BBL"="BBL"))
+  v2=left_join(v,t,by=c("BBL"="BBL"))
  
  
-  #f_sub=v2
-  #names(f_sub)<- c('BBL','Agency_Names', 'Regulatory_Tools', 'Program_Names', 'Project_Names', 'Expiration_Category', 'Number_of_Subsidies')
+  f_sub=v2
+  names(f_sub)<- c('BBL','Agency_Names', 'Regulatory_Tools', 'Program_Names', 'Project_Names', 'Expiration_Category', 'Number_of_Subsidies')
  
   #make Na into none
  
-  #f_sub[which(f_sub$Project_Names==""),5]<-"Not Provided"
+  f_sub[which(f_sub$Project_Names==""),5]<-"Not Provided"
   #f_sub[which(f_sub$Number_of_Subsidies==""),7]<-0
  
   #save file
-  #write.csv(f_sub, 'sub.csv', row.names=FALSE)
+  write.csv(f_sub, 'sub.csv', row.names=FALSE)
  
 ###################################################
 # Dataset 6: Speculation Watchlist
@@ -872,59 +872,59 @@
  
   #dataset has no api
   #update this csv when new years list is posted
-  #stab=read.csv('stabilizedbldgs.csv')
+  stab=read.csv('stabilizedbldgs.csv')
  
-  #dim(stab)
-  #str(stab)
-  #names(stab)
+  dim(stab)
+  str(stab)
+  names(stab)
   #checking dataset
-  #unique(stab$Brough)
-  #class(stab$Brough)
+  unique(stab$Brough)
+  class(stab$Brough)
  
   #save a copy
-  #stab2=stab
+  stab2=stab
  
   #checking dataset
-  #unique(stab$Brough)
-  #as.character(stab$Lot)
-  #as.character(stab$Block)
+  unique(stab$Brough)
+  as.character(stab$Lot)
+  as.character(stab$Block)
  
  
   #make borough column into character
-  #boro=as.character(stab$Brough)
+  boro=as.character(stab$Brough)
  
-  #boro[which(boro=='BRONX')]<-'2'
-  #boro[which(boro=='RONX')]<-'2'
-  #boro[which(boro=='BROOKLYN')]<-'3'
-  #boro[which(boro=='ROOKLYN')]<-'3'
-  #boro[which(boro=='NEW YORK')]<-'1'
-  #boro[which(boro=='EW YORK')]<-'1'
-  #boro[which(boro=='STATEN ISLAND')]<-'5'
-  #boro[which(nchar(boro)>1)]<-'4'
+  boro[which(boro=='BRONX')]<-'2'
+  boro[which(boro=='RONX')]<-'2'
+  boro[which(boro=='BROOKLYN')]<-'3'
+  boro[which(boro=='ROOKLYN')]<-'3'
+  boro[which(boro=='NEW YORK')]<-'1'
+  boro[which(boro=='EW YORK')]<-'1'
+  boro[which(boro=='STATEN ISLAND')]<-'5'
+  boro[which(nchar(boro)>1)]<-'4'
  
-  #stab$boro=boro
+  stab$boro=boro
  
-  #stab$Block=str_pad(stab$Block, 5, pad = "0")
-  #stab$Lot=str_pad(stab$Lot, 4, pad = "0")
-  #stab$BBL=gsub(" ", "",paste(stab$boro, stab$Block, stab$Lot))
+  stab$Block=str_pad(stab$Block, 5, pad = "0")
+  stab$Lot=str_pad(stab$Lot, 4, pad = "0")
+  stab$BBL=gsub(" ", "",paste(stab$boro, stab$Block, stab$Lot))
  
-  #t=data.table(table(stab$BBL))
-  #names(t)<-c('BBL','Rent_Stabilized_Bldgs')
-  #t$BBL=as.character(as.numeric(t$BBL))
+  t=data.table(table(stab$BBL))
+  names(t)<-c('BBL','Rent_Stabilized_Bldgs')
+  t$BBL=as.character(as.numeric(t$BBL))
  
   #join with subsidy file
  
   ####join
-  #full_subrent=full_join(f_sub,t,by=c("BBL"="BBL"))
+  full_subrent=full_join(f_sub,t,by=c("BBL"="BBL"))
  
   #make Na into none
  
-  #full_subrent[which(is.na(full_subrent$Rent_Stabilized_Bldgs)==TRUE),8]<-0
+  full_subrent[which(is.na(full_subrent$Rent_Stabilized_Bldgs)==TRUE),8]<-0
  
-  #full_subrent[which(is.na(full_subrent$Number_of_Subsidies)==TRUE),7]<-0
+  full_subrent[which(is.na(full_subrent$Number_of_Subsidies)==TRUE),7]<-0
  
   #save file
-  #write.csv(full_subrent, 'sub_rent.csv', row.names=FALSE)
+  write.csv(full_subrent, 'sub_rent.csv', row.names=FALSE)
  
 #####################################
 # Read in need shapefiles 
