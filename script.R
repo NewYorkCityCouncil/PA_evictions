@@ -1096,6 +1096,7 @@
     #residential and commercial type looks good
     #only one value in scheduled status, 'scheduled', this dataset may not be the whole universe of evictions
    
+
     ####################cleaning dates & adding a Year column for grouping later
     e$Executed_Date=as.Date(anytime(e$executed_date))
     #e=e[-which(e$Executed_Date>Sys.Date()),]
@@ -1230,7 +1231,11 @@
    
     e2=e
 
-    e=e[,c(1,5,9,11:16)]
+    #removing duplicates
+    e$t=paste(e$court_index_number,e$docket_number, e$executed_date, sep=" ")
+    e=e[!duplicated(e),]
+
+    e=e[,c(1,6,10,12:17)]
    
     #unable to geocode
     length(which(is.na(e$latitude)==TRUE))
