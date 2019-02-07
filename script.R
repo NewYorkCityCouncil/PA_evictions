@@ -1263,7 +1263,7 @@
     #read in previous days evictions and rowbind with todays
     Nofun=fread("eres_map.csv")
     Nofun$BBL=as.character(Nofun$BBL)
-    Nofun$Executed_Date=as.Date(Nofun$Executed_Date)
+    Nofun$Executed_Date=anydate(Nofun$Executed_Date)
     eres_map=rbind(Nofun,eres_map)
 
     write.csv(eres_map,'eres_map.csv',row.names=FALSE)
