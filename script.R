@@ -1009,20 +1009,23 @@
 
   nycc=left_join(nycc,f_conh, by=c("BBL"="BBL"))
   nycc=nycc[which(is.na(nycc$Number_of_Buildings)==FALSE),]
+  nycc=st_transform(nycc,"+proj=longlat +datum=WGS84")
   st_write(nycc,'conh_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #subsidies or rent stabilization
-  #nycs=nyc
+  nycs=nyc
 
-  #nycs=left_join(nycs,full_subrent, by=c("BBL"="BBL"))
-  #nycs=nycs[which(is.na(nycs$Number_of_Subsidies)==FALSE),]
-  #st_write(nycs,'subsidies_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
+  nycs=left_join(nycs,full_subrent, by=c("BBL"="BBL"))
+  nycs=nycs[which(is.na(nycs$Number_of_Subsidies)==FALSE),]
+  nycs=st_transform(nycs,"+proj=longlat +datum=WGS84")
+  st_write(nycs,'subsidies_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #heat hot water
   nych=nyc
 
   nych=left_join(nych,f_hhw, by=c("BBL"="BBL"))
   nych=nych[which(is.na(nych$Descriptors)==FALSE),]
+  nych=st_transform(nych,"+proj=longlat +datum=WGS84")
   st_write(nych,'hhw311_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #hpd violations
@@ -1030,6 +1033,7 @@
 
   nycm=left_join(nycm,f_hmc, by=c("BBL"="BBL"))
   nycm=nycm[which(is.na(nycm$Descriptions)==FALSE),]
+  nycm=st_transform(nycm,"+proj=longlat +datum=WGS84")
   st_write(nycm,'hpdvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #dobecb violations
@@ -1037,6 +1041,7 @@
 
   nycd=left_join(nycd,f_dobecb, by=c("BBL"="BBL"))
   nycd=nycd[which(is.na(nycd$Infraction_Codes)==FALSE),]
+  nycd=st_transform(nycd,"+proj=longlat +datum=WGS84")
   st_write(nycd,'dobecbvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #speculation watchlist
@@ -1044,6 +1049,7 @@
 
   nycw=left_join(nycw,f_spw, by=c("BBL"="BBL"))
   nycw=nycw[which(is.na(nycw$Price)==FALSE),]
+  nycw=st_transform(nycw,"+proj=longlat +datum=WGS84")
   st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
 ##########################################
