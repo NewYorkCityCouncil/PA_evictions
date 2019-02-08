@@ -1059,8 +1059,14 @@
   ############################api read in
   #link=https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=eviction_zip!='2700000'
   #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
-  dat=Sys.Date()-1
-  p= paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date=','\'',dat,'\'',sep="")
+  dat1=Sys.Date()-1
+  ##get last 7 days
+  dat2=dat1-7
+  cd=format(dat1, format="%Y-%m-%dT%H:%M:%S")
+  pd=format(dat2, format="%Y-%m-%dT%H:%M:%S")
+
+  
+  p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date between', pd, 'and', cd, ' ', sep="'")
   e=read.socrata(p)
  
   #if statement
