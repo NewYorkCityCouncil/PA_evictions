@@ -1009,7 +1009,8 @@
 
   nycc=left_join(nycc,f_conh, by=c("BBL"="BBL"))
   nycc=nycc[which(is.na(nycc$Number_of_Buildings)==FALSE),]
-  nycc=st_transform(nycc,"+proj=longlat +datum=WGS84")
+  nycc <- st_as_sf(nycc, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nycc,'conh_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #subsidies or rent stabilization
@@ -1017,7 +1018,8 @@
 
   nycs=left_join(nycs,full_subrent, by=c("BBL"="BBL"))
   nycs=nycs[which(is.na(nycs$Number_of_Subsidies)==FALSE),]
-  nycs=st_transform(nycs,"+proj=longlat +datum=WGS84")
+  nycs <- st_as_sf(nycs, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nycs,'subsidies_pluto.geojson', driver='GeoJSON', delete_dsn=TRUE)
 
   #heat hot water
@@ -1025,7 +1027,8 @@
 
   nych=left_join(nych,f_hhw, by=c("BBL"="BBL"))
   nych=nych[which(is.na(nych$Descriptors)==FALSE),]
-  nych=st_transform(nych,"+proj=longlat +datum=WGS84")
+  nych <- st_as_sf(nych, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nych,'hhw311_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #hpd violations
@@ -1033,7 +1036,8 @@
 
   nycm=left_join(nycm,f_hmc, by=c("BBL"="BBL"))
   nycm=nycm[which(is.na(nycm$Descriptions)==FALSE),]
-  nycm=st_transform(nycm,"+proj=longlat +datum=WGS84")
+  nycm <- st_as_sf(nycm, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nycm,'hpdvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #dobecb violations
@@ -1041,7 +1045,8 @@
 
   nycd=left_join(nycd,f_dobecb, by=c("BBL"="BBL"))
   nycd=nycd[which(is.na(nycd$Infraction_Codes)==FALSE),]
-  nycd=st_transform(nycd,"+proj=longlat +datum=WGS84")
+  nycd <- st_as_sf(nycd, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nycd,'dobecbvio_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
   #speculation watchlist
@@ -1049,7 +1054,8 @@
 
   nycw=left_join(nycw,f_spw, by=c("BBL"="BBL"))
   nycw=nycw[which(is.na(nycw$Price)==FALSE),]
-  nycw=st_transform(nycw,"+proj=longlat +datum=WGS84")
+  nycw <- st_as_sf(nycw, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
   st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 
 ##########################################
@@ -1061,12 +1067,15 @@
   #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
   dat1=Sys.Date()-1
   ##get last 7 days
-  dat2=dat1-7
+  dat2=dat1-30
   cd=format(dat1, format="%Y-%m-%dT%H:%M:%S")
   pd=format(dat2, format="%Y-%m-%dT%H:%M:%S")
 
   
   p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date between', pd, 'and', cd, ' ', sep="'")
+
+  #dat=Sys.Date()-1
+  #p= paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=executed_date=','\'',dat,'\'',sep="")
   e=read.socrata(p)
  
   #if statement
@@ -1247,7 +1256,8 @@
     e$t=paste(e$court_index_number,e$docket_number, e$executed_date, sep=" ")
     e=e[!duplicated(e),]
 
-    e=e[,c(1,6,10,12:17)]
+    #keep duplicate column
+    e=e[,c(1,6,10,12:18)]
    
     #unable to geocode
     length(which(is.na(e$latitude)==TRUE))
@@ -1278,6 +1288,8 @@
     Nofun$Executed_Date=anydate(Nofun$Executed_Date)
     eres_map=rbind(Nofun,eres_map)
 
+    eres_map=eres_map[!duplicated(eres_map),]
+
     write.csv(eres_map,'eres_map.csv',row.names=FALSE)
     #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
 
@@ -1286,6 +1298,7 @@
     ####################################
       eres_maply <- st_as_sf(eres_map, coords = c(7,6), crs = "+proj=longlat +datum=WGS84") %>%
       st_transform("+proj=longlat +datum=WGS84")
+      eres_maply$BBL <- as.numeric(eres_maply$BBL)
       #eres_maply=eres_maply[,-c(9:20)]
       st_write(eres_maply, 'res_evictions.geojson', driver = "GeoJSON", delete_dsn=TRUE)
 
@@ -1357,6 +1370,8 @@
 
       nycer=left_join(nycer,f_er, by=c("BBL"="BBL"))
       nycer=nycer[which(is.na(nycer$id)==FALSE),]
+      nycer <- st_as_sf(nycer, crs = "+proj=longlat +datum=WGS84") %>%
+      st_transform("+proj=longlat +datum=WGS84")
       st_write(nycer, "res_evictions_pluto.geojson", driver = "GeoJSON", delete_dsn=TRUE)
 
     ##############################################
