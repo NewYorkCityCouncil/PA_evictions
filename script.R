@@ -1211,7 +1211,8 @@
     BR=Borough
     BR=gsub(" ","%20",BR)
     url=paste(c(u1,p1,BR,u2),collapse="")
-    TMP=getURL(url)
+    # TMP=getURL(url)
+    TMP = httr::content(httr::GET(url), as = "text")
 
 
     xc=strsplit(TMP,"longitude>|</longitude")[[1]][2]
