@@ -1294,7 +1294,6 @@ if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
 
   write.csv(eres_map,'eres_map.csv',row.names=FALSE)
   #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
-  
 
   #####################################
   # Evictions Residential layer
