@@ -21,10 +21,6 @@ Mode <- function(x) {
   ux[which.max(tabulate(match(x, ux)))]
 }
 
-#set directory
-#getwd()
-#setwd('G:/DATABASE/City_Council/Public_Advocate/evictions_carto_2/')
-
 #environment variable
 source("envs.R")
 
@@ -1067,7 +1063,7 @@ st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
 dat1=Sys.Date()-1
 ##get last 7 days
-dat2=dat1-30
+dat2=dat1-40
 cd=format(dat1, format="%Y-%m-%dT%H:%M:%S")
 pd=format(dat2, format="%Y-%m-%dT%H:%M:%S")
 
@@ -1255,10 +1251,10 @@ if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
 
   #removing duplicates
   e$t=paste(e$court_index_number,e$docket_number, e$executed_date, sep=" ")
-  e=e[!duplicated(e),]
+  e=e[which(duplicated(e$t)==FALSE),]
 
-  #keep duplicate column
-  e=e[,c(1,6,10,12:18)]
+  #keep duplicated column
+  e=e[,c('borough','eviction_zip','residential_commercial_ind','Executed_Date','Year','latitude','longitude','BBL','Eviction_Address','t')]
 
   #unable to geocode
   length(which(is.na(e$latitude)==TRUE))
@@ -1274,7 +1270,7 @@ if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
   eres=e[which(e$residential_commercial_ind=='Residential'),]
   eres=data.table(eres)
 
-  #Number of evictons since 2018 at this addresses
+  #Number of evictons since 2017 at this addresses
   all=data.table(table(eres$BBL))
   names(all)<-c("BBL", "All_Evictions")
   v=left_join(eres,all,by=c("BBL"="BBL"))
@@ -1286,14 +1282,15 @@ if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
   #read in previous days evictions and rowbind with todays
   Nofun=fread("eres_map.csv")
   Nofun$BBL=as.character(Nofun$BBL)
-  Nofun$Executed_Date=anydate(Nofun$Executed_Date)
-  eres_map <- eres_map[, c(1:9, 11)]
+  Nofun$Executed_Date=as.Date(Nofun$Executed_Date, format='%m/%d/%Y')
   eres_map=rbind(Nofun,eres_map)
 
-  eres_map=eres_map[!duplicated(eres_map),]
+  eres_map=eres_map[which(duplicated(eres_map$t)==FALSE),]
+  eres_map=eres_map[which(is.na(eres_map$latitude)==FALSE),]
 
   write.csv(eres_map,'eres_map.csv',row.names=FALSE)
   #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
+  
 
   #####################################
   # Evictions Residential layer
