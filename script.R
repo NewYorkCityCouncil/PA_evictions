@@ -1062,7 +1062,8 @@ st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 #link=https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=150000&$where=eviction_zip!='2700000'
 #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
 dat1=Sys.Date()-1
-##get last 7 days
+##get last 40 days
+##theres lag in evictions being posted
 dat2=dat1-40
 cd=format(dat1, format="%Y-%m-%dT%H:%M:%S")
 pd=format(dat2, format="%Y-%m-%dT%H:%M:%S")
@@ -1280,15 +1281,15 @@ if(is.data.frame(e) && nrow(e)!=0) { ## saving a copy of original
   eres_map$longitude=as.numeric(eres_map$longitude)
 
   #read in previous days evictions and rowbind with todays
-  Nofun=fread("eres_map.csv")
+  Nofun=fread("eres_map_1.csv")
   Nofun$BBL=as.character(Nofun$BBL)
-  Nofun$Executed_Date=as.Date(Nofun$Executed_Date, format='%m/%d/%Y')
+  Nofun$Executed_Date=anydate(Nofun$Executed_Date)
   eres_map=rbind(Nofun,eres_map)
 
   eres_map=eres_map[which(duplicated(eres_map$t)==FALSE),]
   eres_map=eres_map[which(is.na(eres_map$latitude)==FALSE),]
 
-  write.csv(eres_map,'eres_map.csv',row.names=FALSE)
+  write.csv(eres_map,'eres_map_1.csv',row.names=FALSE)
   #eres_map=read.csv('eres_map.csv', stringsAsFactor=FALSE)
   
 
