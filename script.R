@@ -90,7 +90,7 @@ py=as.character(as.numeric(format(as.Date(Sys.Date(), format="%d/%m/%Y"),"%Y"))-
 dobecb$Year=format(as.Date(dobecb$IssueDate, format="%d/%m/%Y"),"%Y")
 
 ### removing unnecessary columns, keep: $bbl, $IssueDate, $infraction_code1, $violation_type, $violation_description, $respondent_name
-db=dobecb[,c(14,30,45:49)]
+db=dobecb[,c("bbl", "IssueDate", "infraction_code1", "violation_type", "violation_description", "respondent_name")]
 head(db,1)
 
 ## create Classification column, all are Class 1 (Immediately Hazardous)
