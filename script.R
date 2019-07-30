@@ -1063,8 +1063,9 @@ st_write(nycw,'speculation_pluto.geojson', driver='GeoJSON',delete_dsn=TRUE)
 #p=paste('https://data.cityofnewyork.us/resource/fxkt-ewig.json?$limit=500000')
 dat1=Sys.Date()-1
 ##get last 40 days
+##get last 100 days due to not updating before
 ##theres lag in evictions being posted
-dat2=dat1-40
+dat2=dat1-100
 cd=format(dat1, format="%Y-%m-%dT%H:%M:%S")
 pd=format(dat2, format="%Y-%m-%dT%H:%M:%S")
 
